@@ -36,23 +36,33 @@
         cell.innerText = pattern[i][j] == 2 ? '❌' :
           pattern[i][j] == 1 ? '⭕️' : '';
         
-        cell.addEventListener('click', () => move(j, i))
+        cell.addEventListener('click', () => userMove(j, i))
         board.appendChild(cell);   
       }
       board.appendChild(document.createElement('br'))
     }
   }
 
-  function move(x, y) {
+  function userMove(x, y) {
     pattern[y][x] = color;
     if (check(pattern, color)) {
       alert(color == 2 ? '❌ is winner' : '⭕️ is winner')
     }
     color = 3 - color;
     show();
-    if(willWin(pattern, color)) {
-      console.log(color == 2 ? '❌ will win' : '⭕️ will win')
-    }
+    computerMove();
+  }
+
+  function computerMove() {
+    let choice = bestChoice(pattern, color);
+    console.log(choice);
+    if(choice.point) 
+      pattern[choice.point[0]][choice.point[1]]  = color;
+    if(check(pattern, color)) {
+      alert(color == 2 ? '❌ is winner' : '⭕️ is winner')
+    }  
+    color = 3 - color;
+    show();
   }
 
   function check(pattern, color) {
@@ -130,12 +140,50 @@
         let temp = clone(pattern)
         temp[i][j] = color;
         if(check(temp, color)) {
-          return true;
+          return [i, j];
         }
       }
     }
-    return false;
+    return null;
+  }
+
+  function bestChoice(pattern, color) {
+    let p;
+    if(p = willWin(pattern, color)) {
+      return {
+        point: p,
+        result: 1
+      }
+    }
+  
+    let result = -2;
+    let point = null;
+
+    outer: for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 3; j++) {
+        if(pattern[i][j])
+          continue;
+        let temp = clone(pattern);
+        temp[i][j] = color;
+        let r = bestChoice(temp, 3 - color).result;
+
+        if(- r > result) {
+          result = - r;
+          point = [i, j];
+        }
+      }
+
+      if(result == 1) {
+        break outer;
+      }
+    }
+
+    return {
+      point: point,
+      result: point ? result: 0
+    }
   }
 
   show();
+
 </script>

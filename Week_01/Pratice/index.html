@@ -1,0 +1,74 @@
+<style>
+  div{
+    background-color: grey;
+    display: inline-block;
+    margin: 30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+  }
+  .green.active{
+    background-color: green;
+  }
+  .yellow.active{
+    background-color: yellow;
+  }
+  .red.active{
+    background-color: red;
+  }
+</style>
+
+<div class="green"></div>
+<div class="yellow"></div>
+<div class="red"></div>
+
+<script>
+  function reset() {
+    let divs = document.getElementsByTagName('div')
+    for(let i = 0; i < divs.length; i++ ) {
+      divs[i].classList.remove('active');
+    }
+  }
+
+  function green() {
+    return new Promise((resolve, reject) => {
+      document.getElementsByClassName('green')[0].classList.add('active');
+      setTimeout(() => {
+        reset();
+        resolve();
+      }, 10000)
+    })
+  }
+
+  function yellow() {
+    return new Promise((resolve, reject) => {
+      document.getElementsByClassName('yellow')[0].classList.add('active');
+      setTimeout(() => {
+        reset();
+        resolve();
+      }, 2000)
+    })
+  }
+
+  function red() {
+    return new Promise((resolve, reject) => {
+      document.getElementsByClassName('red')[0].classList.add('active');
+      setTimeout(() => {
+        reset();
+        resolve();
+      }, 5000)
+    })
+  }
+
+  function start() {
+    green().then(() => {
+      return yellow();
+    }).then(() => {
+      return red();
+    }).then(() => {
+      start();
+    })
+  }
+  start();
+  
+</script>
