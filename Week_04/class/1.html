@@ -1,0 +1,26 @@
+<script>
+  class Animal{}
+
+  class Damage {
+    constructor(from) {
+      this.from = from;
+    }
+  }
+
+  class Dog extends Animal{
+    bite() {
+      return new Damage(this);
+    }
+  }
+
+  class Human extends Animal{
+    harm(someDamage) {
+      console.log(someDamage, `harm human`);
+    }
+  }
+
+  const dog = new Dog();
+  const zs = new Human();
+
+  zs.harm(dog.bite());
+</script>

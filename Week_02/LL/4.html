@@ -31,10 +31,12 @@
   let source = [];
 
   for(let token of tokenize("1 + 2 * 5 + 3")) {
-    console.log(token)
+    // console.log(token)
     if(token.type !== "Whitespace" && token.type !== "LineTerminator") 
       source.push(token);
   }
+
+  console.log(source);
 
   function Expression(tokens) {
     if(source[0].type === "AdditiveExpression" && source[1] && source[1].type === "EOF") {
