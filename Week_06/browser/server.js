@@ -1,17 +1,18 @@
-const http = require('http')
+const http = require('http');
 
 http.createServer((request, response) => {
-  let body = []
-  request.on('error', err => {
+  let body = [];
+  request.on('error', (err) => {
     console.error(err)
-  }).on('data', chunk => {
+  }).on('data', (chunk) => {
+    console.log(chunk.toString());
     body.push(chunk.toString())
   }).on('end', () => {
-    // body = Buffer.concat(body).toString()
-    console.log('body: ' + body)
-    response.writeHead(200, { 'Content-Type': 'text/html' })
-    response.end(' hello world\n')
+    // body = Buffer.concat(body).toString();
+    console.log('body:', body);
+    response.writeHead(200, {'Content-Type': 'text/html'});
+    response.end(' Hello World\n');
   })
-}).listen(8081)
+}).listen(8088);
 
-console.log('server started on http://localhost:8081')
+console.log('server start on http://localhost:8088');
